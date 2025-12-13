@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Benden Hoşlanıyor Musun?</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* height yerine min-height, mobilde daha güvenli */
+            background-color: #fce4ec;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px; /* Kenarlardan boşluk */
+            box-sizing: border-box;
+            overflow: hidden; 
+            flex-direction: column;
+            text-align: center;
+            /* Mobilde tıklarken oluşan mavi seçimi kaldırır: */
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        h1 {
+            color: #d81b60;
+            margin-bottom: 20px;
+            font-size: 2rem; /* Mobilde çok büyük olmaması için */
+            line-height: 1.2;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Tablet/PC'de çok yayılmasın */
+        }
+
+        .gif-container img {
+            width: 100%; /* Ekran genişliğine göre ayarlansın */
+            max-width: 250px; /* Ama çok da devasa olmasın */
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap; 
+        }
+
+        button {
+            padding: 12px 25px; /* Parmakla basmak için ideal boyut */
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            touch-action: manipulation; /* Çift tıklama zoom'unu engeller */
+        }
+
+        #yesBtn {
+            background-color: #4caf50;
+            color: white;
+            font-weight: bold;
+            z-index: 100; 
+        }
+
+        #noBtn {
+            background-color: #f44336;
+            color: white;
+            font-weight: bold;
+        }
+
+        #message {
+            display: none;
+            font-size: 1.8rem;
+            color: #d81b60;
+            font-weight: bold;
+            animation: popIn 0.5s ease;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%; /* Mobilde kenarlara yapışmasın */
+            z-index: 200;
+        }
+
+        #message img {
+            width: 100%;
+            max-width: 300px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            80% { transform: translate(-50%, -50%) scale(1.1); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="mainContainer">
+        <div class="gif-container">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Z5Z3Z5Z3Z5Z3Z5Z3Z5Z3Z5Z3Z5Z3Z5Z3Z5Z3Z5/LnKa2WLkd6eAM/giphy.gif" alt="Cute Gif">
+        </div>
+        
+        <h1 id="question">Benden hoşlanıyor musun?</h1>
+        
+        <div class="buttons">
+            <button id="yesBtn">Evet</button>
+            <button id="noBtn">Hayır</button>
+        </div>
+    </div>
+
+    <div id="message">
+        Biliyordum! Ben de senden hoşlanıyorum ASLIIIIIIII ❤️
+        <br>
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Z5Z3Z5Z3Z5Z3Z5Z3Z5Z3Z5Z3Z5Z3Z5Z3Z5Z3Z5/26FLdmIp6wJr91J4k/giphy.gif">
+    </div>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const mainContainer = document.getElementById('mainContainer');
+        const messageDiv = document.getElementById('message');
+        
+        let yesFontSize = 18; 
+        let yesPadding = 12; 
+        
+        noBtn.addEventListener('click', () => {
+            // MOBİL İÇİN BÜYÜME AYARLARI
+            yesFontSize += 25;  
+            yesPadding += 10;   
+            
+            yesBtn.style.fontSize = yesFontSize + 'px';
+            yesBtn.style.padding = yesPadding + 'px ' + (yesPadding * 2) + 'px';
+
+            // Mobil ekranlar dar olduğu için 120px font mobilde ekranı kaplamaya yeter
+            if (yesFontSize > 100) {
+                 yesBtn.style.position = "fixed";
+                 yesBtn.style.top = "0";
+                 yesBtn.style.left = "0";
+                 yesBtn.style.width = "100vw";
+                 yesBtn.style.height = "100vh";
+                 yesBtn.style.borderRadius = "0"; // Tam ekran olunca köşe yuvarlaklığı gitsin
+                 yesBtn.style.display = "flex";
+                 yesBtn.style.justifyContent = "center";
+                 yesBtn.style.alignItems = "center";
+            }
+
+            const phrases = ["Emin misin?", "Yapma be!", "Hadi ama!", "Kırma beni...", "Cidden mi?", "Son kararın mı?"];
+            const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+            noBtn.innerText = randomPhrase;
+        });
+
+        yesBtn.addEventListener('click', () => {
+            mainContainer.style.display = 'none';
+            messageDiv.style.display = 'block';
+            document.body.style.backgroundColor = "#ffc1e3";
+        });
+    </script>
+</body>
+</html>
